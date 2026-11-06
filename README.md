@@ -4,7 +4,7 @@
 
 **English** · [简体中文](README.zh-CN.md)
 
-> This branch is for **OpenCode 1.x**. OpenCode 2 support is planned on the `opencode-2` branch.
+> This branch is for **OpenCode 1.x**. For OpenCode 2.x, use the [`opencode-2`](https://github.com/yangwudong/opencode-slim/tree/opencode-2) branch.
 
 ## Why
 

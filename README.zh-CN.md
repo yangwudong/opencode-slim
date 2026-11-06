@@ -4,7 +4,7 @@
 
 [English](README.md) · **简体中文**
 
-> 本分支适用于 **OpenCode 1.x**。OpenCode 2 的支持计划放在 `opencode-2` 分支。
+> 本分支适用于 **OpenCode 1.x**。OpenCode 2.x 请用 [`opencode-2`](https://github.com/yangwudong/opencode-slim/tree/opencode-2) 分支。
 
 ## 为什么
 
