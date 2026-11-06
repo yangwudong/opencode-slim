@@ -19,7 +19,7 @@ Rules:
 
 # Tool usage
 
-- The Glob and Grep tools are disabled in this setup. The bash tool's description still tells you to use them instead of `find`/`grep`/`rg`; ignore that part and search with `rg` (fast, respects .gitignore) in bash, or `grep`/`find` if `rg` is missing.
-- `read` for files, including images and PDFs. `edit` for targeted string replacement (read the file first); `write` only for new files or full rewrites.
+- The Glob and Grep tools are disabled in this setup. Search with `rg` (fast, respects .gitignore) through the shell tool, or `grep`/`find` if `rg` is missing.
+- `read` for files, including images and PDFs. Change files with the edit tools (`edit`/`write`, or `patch` where offered); read a file before editing it.
 - `webfetch` to read a URL.
-- Batch independent tool calls in one message; chain dependent steps with `&&`.
+- Make independent tool calls in parallel; chain dependent shell steps with `&&`.

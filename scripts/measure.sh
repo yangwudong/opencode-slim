@@ -1,15 +1,20 @@
 #!/bin/sh
-# measure.sh: how many tokens OpenCode sends before you type anything.
+# measure.sh: how many tokens OpenCode 2 sends before you type anything.
 #
-# Runs one tiny prompt ("Reply with exactly: OK") in an empty temporary git repository and
-# prints the input tokens of that first request: system prompt, tool definitions, skills,
-# global AGENTS.md, MCP tools, plus about a dozen tokens for the prompt itself.
+# Runs one tiny prompt in an empty temporary git repository, on a private server (--standalone)
+# so the shared background service and its loaded config are left alone, and prints the input
+# tokens of the request: system prompt, tool definitions, Code Mode catalog, skills, global
+# AGENTS.md, plus a few dozen tokens for the prompt itself.
+#
+# MCP servers connect in the background, so the very first request may not include their tools
+# yet. The prompt asks for one short shell command first; the number printed is the larger of
+# the two requests, which includes every MCP server that connected within a few seconds.
 #
 #   scripts/measure.sh                   default model and agent
 #   scripts/measure.sh -m provider/model -a plan
 #
 # Compare runs with the same model only: tokenizers differ between models.
-# Each run costs one small request.
+# Each run costs two small requests.
 set -eu
 
 model=""
@@ -18,7 +23,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     -m|--model) model="$2"; shift 2 ;;
     -a|--agent) agent="$2"; shift 2 ;;
-    -h|--help) sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help) sed -n '2,17p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) echo "measure.sh: unknown option $1" >&2; exit 2 ;;
   esac
 done
@@ -31,11 +36,12 @@ out="$dir.jsonl"
 trap 'rm -rf "$dir" "$out"' EXIT
 git -C "$dir" init -q
 
-(cd "$dir" && opencode run --format json ${model:+-m "$model"} ${agent:+--agent "$agent"} \
-  "Reply with exactly: OK" >"$out" 2>/dev/null </dev/null) || true
+(cd "$dir" && opencode run --standalone --auto --format json ${model:+-m "$model"} ${agent:+--agent "$agent"} \
+  "First run the shell command: sleep 4. Then reply with exactly: OK" >"$out" 2>/dev/null </dev/null) || true
 
 python3 - "$out" <<'EOF'
 import json, sys
+steps = []
 for line in open(sys.argv[1]):
     try:
         event = json.loads(line)
@@ -43,11 +49,12 @@ for line in open(sys.argv[1]):
         continue
     if event.get("type") == "step_finish":
         t = event["part"]["tokens"]
-        print(t["input"] + t["cache"]["read"] + t["cache"]["write"])
-        sys.exit(0)
+        steps.append(t["input"] + t["cache"]["read"] + t["cache"]["write"])
     if event.get("type") == "error":
         print("measure.sh: " + json.dumps(event.get("error"))[:300], file=sys.stderr)
         sys.exit(1)
-print("measure.sh: no response; check `opencode run \"hi\"` works with this model", file=sys.stderr)
-sys.exit(1)
+if not steps:
+    print("measure.sh: no response; check `opencode run \"hi\"` works with this model", file=sys.stderr)
+    sys.exit(1)
+print(max(steps))
 EOF
