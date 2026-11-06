@@ -92,16 +92,17 @@ OPENCODE_CONFIG_CONTENT='{"mcp":{"<name>":{"enabled":false}}}' scripts/measure.s
 None of these is required. Measured with `scripts/measure.sh`, none adds more than about 200
 tokens per request.
 
-| Plugin | What it does |
-|---|---|
-| [opencode-tps-meter](https://github.com/yangwudong/opencode-tps-meter) | Shows the model's output speed (tokens per second) in the TUI. |
-| [opencode-bark-notify](https://github.com/yangwudong/opencode-bark-notify) | Pushes the agent's replies, questions, and permission requests to your iPhone through the Bark app. |
-| [opencode-quota](https://github.com/yangwudong/opencode-quota) | Quota and token usage for Copilot, Z.ai, Kimi, OpenCode Go, and more, without polluting the context window. |
-| [Plannotator](https://github.com/backnotprop/plannotator) | Review and annotate the plan agent's plans before implementation. SETUP.md installs a plan prompt that submits to it. |
-| [cc-safety-net](https://github.com/kenryu42/cc-safety-net) | Blocks destructive shell commands such as `rm -rf` outside the project or `git push --force`. |
-| [opencode-notifier](https://github.com/mohak34/opencode-notifier) | Desktop notifications and sounds when the agent finishes or needs permission. |
+| Plugin | What it does | OpenCode 2 |
+|---|---|---|
+| [opencode-tps-meter](https://github.com/yangwudong/opencode-tps-meter) | Shows the model's output speed (tokens per second) in the TUI. | Yes |
+| [opencode-bark-notify](https://github.com/yangwudong/opencode-bark-notify) | Pushes the agent's replies, questions, and permission requests to your iPhone through the Bark app. | Not yet |
+| [opencode-quota](https://github.com/yangwudong/opencode-quota) | Quota and token usage for Copilot, Z.ai, Kimi, OpenCode Go, and more, without polluting the context window. | Use upstream [`@slkiser/opencode-quota`](https://github.com/slkiser/opencode-quota) 5+ |
+| [Plannotator](https://github.com/backnotprop/plannotator) | Review and annotate the plan agent's plans before implementation. SETUP.md installs a plan prompt that submits to it. | Yes |
+| [cc-safety-net](https://github.com/kenryu42/cc-safety-net) | Blocks destructive shell commands such as `rm -rf` outside the project or `git push --force`. | Yes |
+| [opencode-notifier](https://github.com/mohak34/opencode-notifier) | Desktop notifications and sounds when the agent finishes or needs permission. | Yes |
 
-The first three target OpenCode 1.x.
+All of them work on OpenCode 1.x. On OpenCode 2 the config moves: plugins go under `plugins`,
+and TUI plugins such as tps-meter go in `cli.json`. Each plugin's README has the details.
 
 ## Measuring with Magpie
 

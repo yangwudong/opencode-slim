@@ -87,16 +87,17 @@ OPENCODE_CONFIG_CONTENT='{"mcp":{"<name>":{"enabled":false}}}' scripts/measure.s
 
 以下插件都不是必需的。用 `scripts/measure.sh` 测量，每个插件每次请求增加的 tokens 都不超过约 200。
 
-| 插件 | 作用 |
-|---|---|
-| [opencode-tps-meter](https://github.com/yangwudong/opencode-tps-meter) | 在 TUI 里显示模型的输出速度（tokens/秒）。 |
-| [opencode-bark-notify](https://github.com/yangwudong/opencode-bark-notify) | 通过 Bark 把 agent 的回复、提问和权限请求推送到 iPhone。 |
-| [opencode-quota](https://github.com/yangwudong/opencode-quota) | 显示 Copilot、Z.ai、Kimi、OpenCode Go 等的额度和 token 用量，不污染上下文窗口。 |
-| [Plannotator](https://github.com/backnotprop/plannotator) | 在实施前审阅、批注 plan agent 的计划。SETUP.md 会装一个向它提交计划的 plan 提示词。 |
-| [cc-safety-net](https://github.com/kenryu42/cc-safety-net) | 拦截危险的 shell 命令，比如在项目外 `rm -rf`、`git push --force`。 |
-| [opencode-notifier](https://github.com/mohak34/opencode-notifier) | agent 完成或需要权限时，弹桌面通知并播放提示音。 |
+| 插件 | 作用 | OpenCode 2 |
+|---|---|---|
+| [opencode-tps-meter](https://github.com/yangwudong/opencode-tps-meter) | 在 TUI 里显示模型的输出速度（tokens/秒）。 | 支持 |
+| [opencode-bark-notify](https://github.com/yangwudong/opencode-bark-notify) | 通过 Bark 把 agent 的回复、提问和权限请求推送到 iPhone。 | 暂不支持 |
+| [opencode-quota](https://github.com/yangwudong/opencode-quota) | 显示 Copilot、Z.ai、Kimi、OpenCode Go 等的额度和 token 用量，不污染上下文窗口。 | 改用上游 [`@slkiser/opencode-quota`](https://github.com/slkiser/opencode-quota) 5 及以上 |
+| [Plannotator](https://github.com/backnotprop/plannotator) | 在实施前审阅、批注 plan agent 的计划。SETUP.md 会装一个向它提交计划的 plan 提示词。 | 支持 |
+| [cc-safety-net](https://github.com/kenryu42/cc-safety-net) | 拦截危险的 shell 命令，比如在项目外 `rm -rf`、`git push --force`。 | 支持 |
+| [opencode-notifier](https://github.com/mohak34/opencode-notifier) | agent 完成或需要权限时，弹桌面通知并播放提示音。 | 支持 |
 
-前三个适用于 OpenCode 1.x。
+以上插件都支持 OpenCode 1.x。到了 OpenCode 2，配置方式有变化：插件写在 `plugins` 下，tps-meter 这类 TUI
+插件写在 `cli.json` 里。具体见各插件的 README。
 
 ## 用 Magpie 测量
 
